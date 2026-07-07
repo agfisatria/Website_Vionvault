@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Sign Up — VIONVAULT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --ink:#0c0c0d; --paper:#f2f0ea; --bone:#e7e4db; --blood:#c8362a; --dim:#8a8880; --line:#2a2a2a;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--paper); color:var(--ink); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased;}
+    a{color:inherit; text-decoration:none;}
+
+    header{
+      position:sticky; top:0; z-index:100; background:var(--ink); color:var(--paper);
+      display:flex; align-items:center; justify-content:space-between; padding:18px 32px;
+      border-bottom:1px solid #1c1c1c;
+    }
+    .nav-left{display:flex; gap:28px; align-items:center;}
+    .nav-left a{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; position:relative; padding-bottom:3px;}
+    .nav-left a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--blood); transition:width .25s ease;}
+    .nav-left a:hover::after{width:100%;}
+    .brand{font-family:'Anton', sans-serif; font-size:20px; letter-spacing:.28em; position:absolute; left:50%; transform:translateX(-50%);}
+    .nav-right{display:flex; gap:18px; align-items:center;}
+    .nav-icon-btn{
+      width:36px; height:36px; border-radius:50%;
+      border:1px solid rgba(242,240,234,.3); background:transparent; color:var(--paper);
+      display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.2s ease;
+    }
+    .nav-icon-btn:hover{background:var(--blood);}
+    .nav-icon-btn svg{width:16px; height:16px;}
+    .auth-btn{
+      padding:8px 16px; border-radius:999px; border:1px solid var(--paper);
+      background:transparent; color:var(--paper); font-size:11px; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:.2s ease;
+    }
+    .auth-btn:hover{background:var(--blood); border-color:var(--blood);}
+
+    .auth-container{
+      max-width:420px; margin:60px auto; padding:0 20px;
+    }
+    .auth-card{
+      background:var(--bone); padding:48px 32px; border-radius:4px;
+    }
+    .auth-card h1{font-family:'Anton'; font-size:28px; text-align:center; margin-bottom:32px;}
+    .form-group{margin-bottom:20px;}
+    .form-group label{display:block; font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:8px;}
+    .form-group input{
+      width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:4px;
+      font-family:'Inter', sans-serif; font-size:14px;
+    }
+    .form-group input:focus{outline:none; border-color:var(--blood);}
+    .submit-btn{
+      width:100%; padding:12px; background:var(--ink); color:var(--paper);
+      border:none; border-radius:4px; font-size:12px; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase; cursor:pointer; margin-top:24px;
+      transition:.2s ease;
+    }
+    .submit-btn:hover{background:var(--blood);}
+    .toggle-form{text-align:center; margin-top:20px; font-size:13px;}
+    .toggle-form button{
+      background:none; border:none; color:var(--blood); text-decoration:underline;
+      cursor:pointer; font-weight:700; font-size:13px;
+    }
+    .error{color:var(--blood); font-size:12px; margin-top:4px;}
+    .success{color:#4caf50; font-size:12px; margin-top:4px;}
+
+    @media (max-width:560px){
+      header{padding:12px 16px;}
+      .nav-left{gap:14px;}
+      .nav-left a{font-size:10px;}
+      .brand{font-size:15px; letter-spacing:.2em;}
+      .auth-card{padding:32px 20px;}
+      .auth-card h1{font-size:24px;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-left">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="collection.html">Collection</a>
+    <a href="looks.html">Looks</a>
+  </div>
+  <a href="index.html" class="brand">VIONVAULT</a>
+  <div class="nav-right">
+    <a href="favorites.html" class="nav-icon-btn" title="Favorit">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </a>
+    <a href="cart.html" class="nav-icon-btn" title="Keranjang">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+    </a>
+    <button class="auth-btn" onclick="toggleAuth()">Login</button>
+  </div>
+</header>
+
+<section class="auth-container">
+  <div class="auth-card">
+    <h1 id="formTitle">Login</h1>
+    <form id="authForm" onsubmit="handleSubmit(event)">
+      <div class="form-group" id="nameGroup" style="display:none;">
+        <label for="fullName">Nama Lengkap</label>
+        <input type="text" id="fullName" placeholder="Masukkan nama lengkap">
+        <div class="error" id="nameError"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Masukkan email Anda" required>
+        <div class="error" id="emailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan password" required>
+        <div class="error" id="passwordError"></div>
+      </div>
+      <div class="form-group" id="confirmGroup" style="display:none;">
+        <label for="confirmPassword">Konfirmasi Password</label>
+        <input type="password" id="confirmPassword" placeholder="Konfirmasi password Anda">
+        <div class="error" id="confirmError"></div>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Login</button>
+      <div class="success" id="successMsg"></div>
+    </form>
+    <div class="toggle-form">
+      <span id="toggleText">Belum punya akun? </span>
+      <button onclick="toggleAuth()">
+        <span id="toggleLink">Daftar di sini</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+let isSignUp = false;
+
+function toggleAuth(){
+  isSignUp = !isSignUp;
+  const formTitle = document.getElementById('formTitle');
+  const nameGroup = document.getElementById('nameGroup');
+  const confirmGroup = document.getElementById('confirmGroup');
+  const submitBtn = document.getElementById('submitBtn');
+  const toggleText = document.getElementById('toggleText');
+  const toggleLink = document.getElementById('toggleLink');
+  
+  if(isSignUp){
+    formTitle.textContent = 'Daftar Akun';
+    nameGroup.style.display = 'block';
+    confirmGroup.style.display = 'block';
+    submitBtn.textContent = 'Daftar';
+    toggleText.textContent = 'Sudah punya akun? ';
+    toggleLink.textContent = 'Login di sini';
+  } else {
+    formTitle.textContent = 'Login';
+    nameGroup.style.display = 'none';
+    confirmGroup.style.display = 'none';
+    submitBtn.textContent = 'Login';
+    toggleText.textContent = 'Belum punya akun? ';
+    toggleLink.textContent = 'Daftar di sini';
+  }
+  
+  document.getElementById('authForm').reset();
+  document.querySelectorAll('.error').forEach(e => e.textContent = '');
+  document.getElementById('successMsg').textContent = '';
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  
+  document.querySelectorAll('.error').forEach(e => e.textContent = '');
+  document.getElementById('successMsg').textContent = '';
+  
+  if(!email || !password){
+    document.getElementById('emailError').textContent = 'Email dan password harus diisi';
+    return;
+  }
+  
+  if(isSignUp){
+    const fullName = document.getElementById('fullName').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if(!fullName){
+      document.getElementById('nameError').textContent = 'Nama lengkap harus diisi';
+      return;
+    }
+    if(password !== confirmPassword){
+      document.getElementById('confirmError').textContent = 'Password tidak cocok';
+      return;
+    }
+    
+    // Simulasi penyimpanan data
+    const userData = {fullName, email, password};
+    localStorage.setItem('user_' + email, JSON.stringify(userData));
+    localStorage.setItem('currentUser', email);
+    
+    document.getElementById('successMsg').textContent = 'Akun berhasil dibuat! Silakan login.';
+    setTimeout(() => {
+      toggleAuth();
+    }, 1500);
+  } else {
+    // Simulasi login
+    const userData = localStorage.getItem('user_' + email);
+    if(!userData){
+      document.getElementById('emailError').textContent = 'Email tidak terdaftar';
+      return;
+    }
+    const user = JSON.parse(userData);
+    if(user.password !== password){
+      document.getElementById('passwordError').textContent = 'Password salah';
+      return;
+    }
+    
+    localStorage.setItem('currentUser', email);
+    document.getElementById('successMsg').textContent = 'Login berhasil! Mengarahkan...';
+    setTimeout(() => {
+      location.href = 'index.html';
+    }, 1500);
+  }
+}
+
+// Check apakah sudah login
+window.addEventListener('load', () => {
+  const currentUser = localStorage.getItem('currentUser');
+  if(currentUser){
+    location.href = 'index.html';
+  }
+});
+</script>
+
+</body>
+</html>
