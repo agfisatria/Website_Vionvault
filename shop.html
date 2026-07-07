@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop — VIONVAULT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0c0c0d; --paper:#f2f0ea; --bone:#e7e4db; --blood:#c8362a; --dim:#8a8880; --line:#2a2a2a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+
+  header{
+    position:sticky; top:0; z-index:100; background:var(--ink); color:var(--paper);
+    display:flex; align-items:center; justify-content:space-between; padding:18px 32px;
+    border-bottom:1px solid #1c1c1c;
+  }
+  .nav-left{display:flex; gap:28px; align-items:center;}
+  .nav-left a{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; position:relative; padding-bottom:3px;}
+  .nav-left a.active{color:var(--blood);}
+  .nav-left a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--blood); transition:width .25s ease;}
+  .nav-left a:hover::after{width:100%;}
+  .brand{font-family:'Anton', sans-serif; font-size:20px; letter-spacing:.28em; position:absolute; left:50%; transform:translateX(-50%);}
+  .nav-right{width:96px;}
+
+  .page-banner{
+    background:linear-gradient(160deg, #14131a 0%, #1d1c22 40%, #100f13 100%);
+    color:var(--paper); padding:64px 32px 40px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .page-banner h1{font-family:'Anton'; font-size:44px; letter-spacing:.03em; margin-bottom:10px;}
+  .page-banner p{color:var(--bone); opacity:.7; font-size:13px; letter-spacing:.05em;}
+
+  .search-bar{ margin-bottom:26px; }
+  .search-bar form{
+    display:flex; align-items:center; gap:8px; max-width:440px; margin:0 auto;
+    background:rgba(255,255,255,.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:6px 8px 6px 18px;
+  }
+  .search-bar input{ flex:1; border:none; outline:none; background:transparent; font-size:13px; font-family:'Inter',sans-serif; color:var(--paper); }
+  .search-bar input::placeholder{ color:rgba(242,240,234,.55); }
+  .search-bar button{
+    border:none; background:rgba(255,255,255,.15); color:var(--paper); width:34px; height:34px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; transition:.2s ease;
+  }
+  .search-bar button:hover{ background:var(--blood); }
+  .search-bar button svg{ width:15px; height:15px; }
+
+  .filter-bar{
+    position:sticky; top:61px; z-index:90; background:var(--paper);
+    display:flex; gap:10px; padding:18px 32px; border-bottom:1px solid #ddd9cd;
+    overflow-x:auto;
+  }
+  .filter-btn{
+    flex-shrink:0; padding:9px 18px; border-radius:999px; border:1px solid var(--ink);
+    font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    background:transparent; cursor:pointer; transition:.2s ease;
+  }
+  .filter-btn.active, .filter-btn:hover{background:var(--ink); color:var(--paper);}
+
+  .grid-section{padding:32px 32px 64px;}
+  .product-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:2px; background:var(--line);
+  }
+  .card{background:var(--bone); position:relative; display:flex; flex-direction:column;}
+  .card-media{position:relative; aspect-ratio:3/4; overflow:hidden; background:#111;}
+  .card-media img{width:100%; height:100%; display:block;}
+  .card-media img.img-bg{position:absolute; inset:-15%; width:130%; height:130%; object-fit:cover; filter:blur(28px) brightness(.55) saturate(1.15); z-index:1; transition:transform .5s ease;}
+  .card-media img.img-fg{position:relative; z-index:2; object-fit:contain; transition:transform .5s ease;}
+  .card:hover .card-media img{transform:scale(1.045);}
+  .badge{position:absolute; top:12px; left:12px; background:var(--blood); color:#fff; font-size:10px; font-weight:800; letter-spacing:.08em; padding:4px 8px; border-radius:2px; z-index:5;}
+  .badge.new{background:var(--ink);}
+  .card-info{padding:14px 16px 16px; border-top:1px solid rgba(0,0,0,.08);}
+  .cat-tag{font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:4px;}
+  .name{font-size:12.5px; font-weight:700; letter-spacing:.02em; text-transform:uppercase; line-height:1.3; display:block; margin-bottom:8px; min-height:32px;}
+  .price-row{display:flex; align-items:baseline; gap:8px; margin-bottom:6px; flex-wrap:wrap;}
+  .price{font-size:15px; font-weight:800; color:var(--blood);}
+  .off-pct{font-size:11px; font-weight:700; color:#fff; background:var(--blood); padding:2px 6px; border-radius:2px;}
+  .meta-row{display:flex; align-items:center; gap:8px; font-size:11px; color:var(--dim);}
+  .star{color:#e8a020;}
+  .cek-harga{font-size:12px; font-weight:700; color:var(--blood); text-decoration:underline;}
+
+  footer{background:var(--ink); color:var(--dim); text-align:center; padding:30px 20px; font-size:11px; letter-spacing:.12em; text-transform:uppercase;}
+
+  @media (max-width:900px){ .product-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){
+    .nav-left{gap:14px;} .nav-left a{font-size:10px;}
+    .brand{font-size:15px; letter-spacing:.2em;}
+    .page-banner h1{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-left">
+    <a href="index.html">Home</a>
+    <a href="shop.html" class="active">Shop</a>
+    <a href="collection.html">Collection</a>
+    <a href="looks.html">Looks</a>
+  </div>
+  <a href="index.html" class="brand">VIONVAULT</a>
+  <div class="nav-right"></div>
+</header>
+
+<section class="page-banner">
+  <div class="search-bar">
+    <form id="searchForm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:rgba(242,240,234,.6); width:16px; height:16px; flex-shrink:0;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Cari produk... (kaos, hoodie, jaket, longsleeve)" autocomplete="off">
+      <button type="submit" aria-label="Cari">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </form>
+  </div>
+  <h1>Shop</h1>
+  <p>Semua koleksi kaos, longsleeve, jaket &amp; hoodie — reworked in-house.</p>
+</section>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-cat="semua">Semua Produk</button>
+  <button class="filter-btn" data-cat="kaos">Kaos</button>
+  <button class="filter-btn" data-cat="jaket">Jaket</button>
+  <button class="filter-btn" data-cat="hoodie">Hoodie</button>
+  <button class="filter-btn" data-cat="longsleeve">Longsleeve</button>
+</div>
+
+<section class="grid-section">
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<footer>© 2026 VionVault — Rework Your Style</footer>
+
+<script>
+const products = [
+  // KAOS
+  {cat:'kaos', img:'assets/products/kaos-sparkle-vision.jpg', name:'T-Shirt Boxy Crop — Sparkle Vision', price:151980, pct:49, rating:4.9, sold:'22 terjual'},
+  {cat:'kaos', img:'assets/products/kaos-retro-crest.jpg', name:'T-Shirt Boxy Crop — Retro Crest', priceUnknown:true},
+  {cat:'kaos', img:'assets/products/kaos-angelic-vision.jpg', name:'T-Shirt Boxy Crop — Angelic Vision', priceUnknown:true},
+  {cat:'kaos', img:'assets/products/kaos-modern.jpg', name:'T-Shirt Boxy Crop — Modern Series', priceUnknown:true},
+  {cat:'kaos', img:'assets/products/kaos-iconic.jpg', name:'T-Shirt Boxy Crop — Iconic Series', priceUnknown:true},
+  {cat:'kaos', img:'assets/products/kaos-angelic-vision-2.jpg', name:'T-Shirt Boxy Crop — Angelic Vision II', priceUnknown:true},
+
+  // LONGSLEEVE
+  {cat:'longsleeve', img:'assets/products/longsleeve-victory-bound.jpg', name:'Longsleeve Boxy — Victory Bound', price:174440, pct:51, rating:4.9, sold:'101 terjual'},
+  {cat:'longsleeve', img:'assets/products/longsleeve-nitro-rush.jpg', name:'Longsleeve Boxy — Nitro Rush', price:174440, pct:51, rating:5.0, sold:'9 terjual'},
+  {cat:'longsleeve', img:'assets/products/longsleeve-neon-racer.jpg', name:'Longsleeve Boxy — Neon Racer', price:174440, pct:51, rating:5.0, sold:'4 terjual'},
+  {cat:'longsleeve', img:'assets/products/longsleeve-double-layer-1.jpg', name:'Longsleeve Double Layer Boxy — Meet The World', price:181420, pct:53, rating:4.9, sold:'Penilaian Toko'},
+  {cat:'longsleeve', img:'assets/products/longsleeve-double-layer-angelic.jpg', name:'Longsleeve Double Layer Boxy — Angelic', price:181420, pct:53, rating:5.0, sold:'1 terjual'},
+
+  // JAKET (zipper hoodie)
+  {cat:'jaket', img:'assets/products/jaket-dragon-mask.jpg', name:'Hoodie Boxy Zipper — Dragon Mask', price:364780, pct:39, rating:5.0, sold:'11 terjual'},
+  {cat:'jaket', img:'assets/products/jaket-rewind-686.jpg', name:'Hoodie Boxy Zipper — Rewind 686', price:364780, pct:39, rating:5.0, sold:'22 terjual'},
+
+  // HOODIE
+  {cat:'hoodie', img:'assets/products/hoodie-midnight-reserve.jpg', name:'Hoodie Boxy — Midnight Reserve', price:334880, pct:44, rating:4.9, sold:'51 terjual'},
+  {cat:'hoodie', img:'assets/products/hoodie-street-sketch.jpg', name:'Hoodie Boxy — Street Sketch', price:334880, pct:44, rating:5.0, sold:'17 terjual'},
+  {cat:'hoodie', img:'assets/products/hoodie-horsepower.jpg', name:'Hoodie Boxy — Horsepower Edition', price:334880, pct:44, rating:4.9, sold:'Penilaian Toko'},
+  {cat:'hoodie', img:'assets/products/hoodie-archive-v2.jpg', name:'Hoodie Boxy — Archive V2', price:598000, isNew:true, rating:4.9, sold:'Penilaian Toko'},
+  {cat:'hoodie', img:'assets/products/hoodie-scriptline-67.jpg', name:'Hoodie Boxy — Scriptline 67', price:598000, isNew:true, rating:4.9, sold:'Penilaian Toko'},
+];
+
+function formatRp(n){ return 'Rp' + n.toLocaleString('id-ID'); }
+
+let currentCat = 'semua';
+let currentSearch = '';
+
+function render(cat, search){
+  if(cat !== undefined) currentCat = cat;
+  if(search !== undefined) currentSearch = search;
+
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  let list = currentCat === 'semua' ? products : products.filter(p => p.cat === currentCat);
+  const q = currentSearch.trim().toLowerCase();
+  if(q){
+    list = list.filter(p => p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q));
+  }
+
+  if(list.length === 0){
+    grid.innerHTML = `<div style="grid-column:1/-1; padding:48px 12px; text-align:center; color:var(--dim); font-size:13px;">Produk tidak ditemukan untuk "${currentSearch}".</div>`;
+    return;
+  }
+
+  list.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    let badge = '';
+    if(p.pct) badge = `<span class="badge">-${p.pct}%</span>`;
+    else if(p.isNew) badge = `<span class="badge new">Produk Baru</span>`;
+
+    let priceBlock = '';
+    if(p.priceUnknown){
+      priceBlock = `<a class="cek-harga" href="https://shopee.co.id/vionvault?shopCollection=266512453#product_list" target="_blank" rel="noopener">Cek Harga di Shopee →</a>`;
+    } else {
+      priceBlock = `<div class="price-row"><span class="price">${formatRp(p.price)}</span>${p.pct ? `<span class="off-pct">-${p.pct}%</span>` : ''}</div>
+        <div class="meta-row"><span class="star">★ ${p.rating}</span><span>·</span><span>${p.sold}</span></div>`;
+    }
+
+    card.innerHTML = `
+      <div class="card-media">
+        ${badge}
+        <img src="${p.img}" alt="" class="img-bg" aria-hidden="true">
+        <img src="${p.img}" alt="${p.name}" class="img-fg">
+      </div>
+      <div class="card-info">
+        <span class="cat-tag">${p.cat}</span>
+        <span class="name">${p.name}</span>
+        ${priceBlock}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('filterBar').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render(btn.dataset.cat, undefined);
+});
+
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => render(undefined, searchInput.value));
+document.getElementById('searchForm').addEventListener('submit', e => {
+  e.preventDefault();
+  render(undefined, searchInput.value);
+});
+
+// Ambil query pencarian dari URL jika datang dari halaman lain (?search=...)
+const urlParams = new URLSearchParams(window.location.search);
+const initialSearch = urlParams.get('search') || '';
+if(initialSearch) searchInput.value = initialSearch;
+
+render('semua', initialSearch);
+</script>
+
+</body>
+</html>

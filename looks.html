@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Looks — VIONVAULT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{ --ink:#0c0c0d; --paper:#f2f0ea; --bone:#e7e4db; --blood:#c8362a; --dim:#8a8880; --line:#2a2a2a; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+
+  header{position:sticky; top:0; z-index:100; background:var(--ink); color:var(--paper); display:flex; align-items:center; justify-content:space-between; padding:18px 32px; border-bottom:1px solid #1c1c1c;}
+  .nav-left{display:flex; gap:28px; align-items:center;}
+  .nav-left a{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; position:relative; padding-bottom:3px;}
+  .nav-left a.active{color:var(--blood);}
+  .nav-left a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--blood); transition:width .25s ease;}
+  .nav-left a:hover::after{width:100%;}
+  .brand{font-family:'Anton', sans-serif; font-size:20px; letter-spacing:.28em; position:absolute; left:50%; transform:translateX(-50%);}
+  .nav-right{width:96px;}
+
+  .page-banner{background:linear-gradient(160deg, #14131a 0%, #1d1c22 40%, #100f13 100%); color:var(--paper); padding:64px 32px 40px; text-align:center;}
+  .page-banner h1{font-family:'Anton'; font-size:44px; letter-spacing:.03em; margin-bottom:10px;}
+  .page-banner p{color:var(--bone); opacity:.7; font-size:13px; letter-spacing:.05em;}
+
+  .search-bar{ margin-bottom:26px; }
+  .search-bar form{
+    display:flex; align-items:center; gap:8px; max-width:440px; margin:0 auto;
+    background:rgba(255,255,255,.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:6px 8px 6px 18px;
+  }
+  .search-bar input{ flex:1; border:none; outline:none; background:transparent; font-size:13px; font-family:'Inter',sans-serif; color:var(--paper); }
+  .search-bar input::placeholder{ color:rgba(242,240,234,.55); }
+  .search-bar button{
+    border:none; background:rgba(255,255,255,.15); color:var(--paper); width:34px; height:34px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; transition:.2s ease;
+  }
+  .search-bar button:hover{ background:var(--blood); }
+  .search-bar button svg{ width:15px; height:15px; }
+
+  /* Editorial gallery */
+  .look-block{position:relative; overflow:hidden; display:flex; align-items:flex-end; background:#111;}
+  .look-block img{width:100%; height:100%; display:block;}
+  .look-block img.img-bg{position:absolute; inset:-15%; width:130%; height:130%; object-fit:cover; filter:blur(34px) brightness(.5) saturate(1.15); z-index:1;}
+  .look-block img.img-fg{position:relative; z-index:2; object-fit:contain;}
+  .look-scrim{position:absolute; inset:0; z-index:2; background:linear-gradient(0deg, rgba(10,10,10,.85) 0%, rgba(10,10,10,0) 55%);}
+  .look-caption{position:relative; z-index:3; padding:28px 32px; color:#f2efe6;}
+  .look-caption .idx{font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--blood); font-weight:700; display:block; margin-bottom:6px;}
+  .look-caption h3{font-family:'Anton'; font-size:26px; letter-spacing:.02em;}
+  .look-caption p{font-size:12px; color:var(--bone); opacity:.8; margin-top:6px; max-width:420px;}
+
+  .look-hero{aspect-ratio:16/8;}
+  .look-hero img{object-position:center 30%;}
+
+  .look-duo{display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--line); margin-top:2px;}
+  .look-duo .look-block{aspect-ratio:3/4;}
+
+  /* Live sale promo block */
+  .promo{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:2px; background:var(--line); margin-top:2px;
+  }
+  .promo-media{position:relative; overflow:hidden; aspect-ratio:9/12; background:#111;}
+  .promo-media img{width:100%; height:100%; display:block;}
+  .promo-media img.img-bg{position:absolute; inset:-15%; width:130%; height:130%; object-fit:cover; filter:blur(34px) brightness(.5) saturate(1.15); z-index:1;}
+  .promo-media img.img-fg{position:relative; z-index:2; object-fit:contain;}
+  .promo-copy{
+    background:var(--ink); color:var(--paper); padding:40px 36px;
+    display:flex; flex-direction:column; justify-content:center; gap:16px;
+  }
+  .promo-copy .tag{font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--blood); font-weight:700;}
+  .promo-copy h3{font-family:'Anton'; font-size:36px; letter-spacing:.02em; line-height:1.05;}
+  .promo-copy .time{font-family:'Archivo Black'; font-size:20px; letter-spacing:.02em;}
+  .promo-copy p{font-size:13px; color:var(--bone); opacity:.85; max-width:380px;}
+  .promo-copy a{
+    display:inline-flex; align-items:center; gap:8px; background:var(--blood); color:#fff;
+    padding:13px 24px; border-radius:999px; font-size:12px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; width:fit-content; margin-top:6px;
+    transition:transform .2s ease;
+  }
+  .promo-copy a:hover{transform:scale(1.04);}
+
+  .cta-band{margin:56px 32px 0; padding:36px 28px; background:var(--ink); color:var(--paper); text-align:center; border-radius:4px;}
+  .cta-band h3{font-family:'Anton'; font-size:22px; margin-bottom:10px;}
+  .cta-band a{display:inline-block; margin-top:12px; background:var(--blood); color:#fff; padding:12px 24px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;}
+
+  footer{background:var(--ink); color:var(--dim); text-align:center; padding:30px 20px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; margin-top:56px;}
+
+  @media (max-width:900px){
+    .look-duo{grid-template-columns:1fr;}
+    .promo{grid-template-columns:1fr;}
+    .promo-media{aspect-ratio:16/10;}
+  }
+  @media (max-width:560px){
+    .nav-left{gap:14px;} .nav-left a{font-size:10px;}
+    .brand{font-size:15px; letter-spacing:.2em;}
+    .page-banner h1{font-size:32px;}
+    .look-caption h3{font-size:20px;}
+    .look-hero{aspect-ratio:4/5;}
+    .promo-copy h3{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-left">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="collection.html">Collection</a>
+    <a href="looks.html" class="active">Looks</a>
+  </div>
+  <a href="index.html" class="brand">VIONVAULT</a>
+  <div class="nav-right"></div>
+</header>
+
+<section class="page-banner">
+  <div class="search-bar">
+    <form onsubmit="event.preventDefault(); location.href='shop.html?search=' + encodeURIComponent(document.getElementById('searchInput').value);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:rgba(242,240,234,.6); width:16px; height:16px; flex-shrink:0;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Cari produk... (kaos, hoodie, jaket, longsleeve)" autocomplete="off">
+      <button type="submit" aria-label="Cari">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </form>
+  </div>
+  <h1>Looks</h1>
+  <p>Not just clothes, this is a whole movement — built for the loud ones, the fearless ones.</p>
+</section>
+
+<div class="look-block look-hero">
+  <img src="assets/looks/crowd-lineup.jpg" alt="" class="img-bg" aria-hidden="true">
+  <img src="assets/looks/crowd-lineup.jpg" alt="VionVault squad lineup — the whole crew" class="img-fg">
+  <div class="look-scrim"></div>
+  <div class="look-caption">
+    <span class="idx">Look 00 · The Movement</span>
+    <h3>Welcome to the New Era</h3>
+    <p>Sembilan gaya, satu identitas — dibangun untuk yang berisik, yang berani, yang nggak pernah ikut arus.</p>
+  </div>
+</div>
+
+<div class="look-duo">
+  <div class="look-block">
+    <img src="assets/looks/hero-model.jpg" alt="" class="img-bg" aria-hidden="true">
+    <img src="assets/looks/hero-model.jpg" alt="Look — red VION.VAULT tee close up" class="img-fg">
+    <div class="look-scrim"></div>
+    <div class="look-caption">
+      <span class="idx">Look 01 · Red Alert</span>
+      <h3>VION.VAULT Tee</h3>
+      <p>Tee merah oversized dipadu denim wide-leg berdetail spike belt — statement piece koleksi ini.</p>
+    </div>
+  </div>
+  <div class="look-block">
+    <img src="assets/looks/dragon-kitchen.jpg" alt="" class="img-bg" aria-hidden="true">
+    <img src="assets/looks/dragon-kitchen.jpg" alt="Look — Dragon Zip hoodie in kitchen" class="img-fg">
+    <div class="look-scrim"></div>
+    <div class="look-caption">
+      <span class="idx">Look 02 · Dragon Zip</span>
+      <h3>Street Ready</h3>
+      <p>Hoodie zipper grafis naga merah, denim shorts, dan boots — gaya harian yang tetap berani tampil.</p>
+    </div>
+  </div>
+</div>
+
+<div class="look-block look-hero" style="aspect-ratio:16/9; margin-top:2px;">
+  <img src="assets/looks/mon-hoodie.jpg" alt="" class="img-bg" aria-hidden="true">
+  <img src="assets/looks/mon-hoodie.jpg" alt="Look — MON racing hoodie" class="img-fg">
+  <div class="look-scrim"></div>
+  <div class="look-caption">
+    <span class="idx">Look 03 · MON Racing</span>
+    <h3>Track Day</h3>
+    <p>Hoodie grafis racing warna pink-kuning dipadu sweatpants oatmeal — motorsport meets streetwear.</p>
+  </div>
+</div>
+
+<section class="promo">
+  <div class="promo-media">
+    <img src="assets/looks/live-sale.jpg" alt="" class="img-bg" aria-hidden="true">
+    <img src="assets/looks/live-sale.jpg" alt="VionVault Live Sale" class="img-fg">
+  </div>
+  <div class="promo-copy">
+    <span class="tag">Live Sale</span>
+    <h3>Going Crazy<br>Right Now</h3>
+    <span class="time">12:00 PM – 10:00 PM</span>
+    <p>VionVault live sale lagi berlangsung — diskon gede-gedean, stok terbatas. Get in before it's too late.</p>
+    <a href="shop.html">Belanja Sekarang →</a>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h3>Suka salah satu look-nya?</h3>
+  <a href="shop.html">Belanja Koleksinya →</a>
+</div>
+
+<footer>© 2026 VionVault — Rework Your Style</footer>
+
+</body>
+</html>
